@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>선행학습 영향평가 보고서 검색기 | 맥에듀테크 김휘창입시컨설팅</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ══════════════════════════════
+   다크 모드 변수
+══════════════════════════════ */
+:root{
+  --bg:   #07090f;
+  --bg2:  #0c1120;
+  --bg3:  #111827;
+  --bg4:  #1a2236;
+  --card: #0e1628;
+  --card2:#131d30;
+  --bd:   #1e2d47;
+  --bd2:  #243450;
+  --tx:   #e2e8f4;
+  --tx2:  #7a94b8;
+  --tx3:  #3d546e;
+  --accent:  #00c4ff;
+  --accent2: #0099cc;
+  --a-glow:  rgba(0,196,255,.18);
+  --violet:  #8b5cf6;
+  --v-glow:  rgba(139,92,246,.18);
+  --n:  #060c1a;
+  --n3: #0a1428;
+  --guide-bg:   #0a1220;
+  --guide-card: #0d1828;
+  --guide-border:#1a2d45;
+  --guide-muted: #4a6380;
+  --row-hover: #101e35;
+  --hdr-line: #00c4ff;
+}
+
+/* ══════════════════════════════
+   라이트 모드 변수
+══════════════════════════════ */
+[data-theme="light"]{
+  --bg:   #f0f4fa;
+  --bg2:  #ffffff;
+  --bg3:  #f8faff;
+  --bg4:  #e8edf8;
+  --card: #ffffff;
+  --card2:#f4f7fe;
+  --bd:   #dde4f0;
+  --bd2:  #c8d3e8;
+  --tx:   #0f1c35;
+  --tx2:  #3d5478;
+  --tx3:  #8ba0bc;
+  --accent:  #0070c0;
+  --accent2: #005a9e;
+  --a-glow:  rgba(0,112,192,.12);
+  --violet:  #6d28d9;
+  --v-glow:  rgba(109,40,217,.1);
+  --n:  #0f2044;
+  --n3: #1a3460;
+  --guide-bg:   #eef3fb;
+  --guide-card: #ffffff;
+  --guide-border:#d8e2f2;
+  --guide-muted: #5a7090;
+  --row-hover: #f0f5ff;
+  --hdr-line: #0070c0;
+}
+
+/* ══════════════════════════════
+   리셋 & 기본
+══════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  background:var(--bg);
+  color:var(--tx);
+  font-size:13px;
+  min-height:100vh;
+  transition:background .3s,color .3s;
+}
+
+/* 커스텀 스크롤바 */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent2)}
+
+/* ══════════════════════════════
+   헤더
+══════════════════════════════ */
+header{
+  background:linear-gradient(135deg,var(--n) 0%,var(--n3) 100%);
+  color:#fff;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:54px;
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 1px 0 var(--hdr-line), 0 4px 24px rgba(0,0,0,.5);
+}
+/* 헤더 배경 격자 패턴 */
+header::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,196,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,196,255,.04) 1px,transparent 1px);
+  background-size:28px 28px;
+  pointer-events:none;
+}
+.hbrand{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+
+/* 브랜드 뱃지 */
+.hbadge{
+  font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:20px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;letter-spacing:.3px;
+  box-shadow:0 0 12px var(--a-glow);
+  white-space:nowrap;
+}
+[data-theme="light"] .hbadge{color:#fff}
+
+.htitle{
+  font-size:14px;font-weight:800;
+  letter-spacing:-.3px;
+  background:linear-gradient(90deg,#fff 60%,rgba(255,255,255,.55));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hmeta{
+  display:flex;align-items:center;gap:12px;
+  position:relative;z-index:1;
+}
+.hmeta-cnt{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:rgba(255,255,255,.45);
+}
+.hmeta-cnt strong{color:var(--accent);font-size:13px}
+
+/* 테마 토글 */
+.theme-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 13px;border-radius:20px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.8);
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:11px;font-weight:600;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+  backdrop-filter:blur(8px);
+}
+.theme-btn:hover{
+  background:rgba(0,196,255,.15);
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:0 0 12px var(--a-glow);
+}
+.theme-btn .icon{font-size:13px;line-height:1}
+
+/* ══════════════════════════════
+   가이드 섹션
+══════════════════════════════ */
+#guideWrap{
+  background:var(--guide-bg);
+  border-bottom:1px solid var(--guide-border);
+  position:sticky;top:54px;z-index:90;
+  transition:background .3s;
+}
+#guideToggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:10px 24px;
+  background:none;border:none;
+  color:var(--tx2);cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:12px;font-weight:600;
+  text-align:left;gap:8px;
+  transition:color .2s;
+}
+#guideToggle:hover{color:var(--accent)}
+#guideArrow{font-size:11px;transition:transform .3s;display:inline-block;opacity:.6}
+#guideBody{
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1);
+}
+#guideBody.open{max-height:600px}
+.guide-inner{padding:4px 24px 18px}
+.guide-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:10px;
+}
+.guide-card{
+  background:var(--guide-card);
+  border:1px solid var(--guide-border);
+  border-radius:10px;
+  padding:14px 16px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.guide-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+}
+.guide-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+}
+.guide-card.c1::before{background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+.guide-card.c2::before{background:linear-gradient(90deg,#10b981,#34d399)}
+.guide-card.c3::before{background:linear-gradient(90deg,#f97316,#fb923c)}
+.guide-label{
+  display:inline-block;
+  font-size:10px;font-weight:700;
+  padding:2px 9px;border-radius:10px;
+  margin-bottom:8px;font-family:'JetBrains Mono',monospace;
+}
+.guide-card.c1 .guide-label{background:rgba(14,165,233,.15);color:#38bdf8;border:1px solid rgba(14,165,233,.25)}
+.guide-card.c2 .guide-label{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+.guide-card.c3 .guide-label{background:rgba(249,115,22,.15);color:#fb923c;border:1px solid rgba(249,115,22,.25)}
+.guide-title{font-size:12.5px;font-weight:700;color:var(--tx);margin-bottom:7px}
+.guide-desc{font-size:11.5px;color:var(--tx2);line-height:1.75}
+.guide-tips{
+  margin-top:9px;padding-top:8px;
+  border-top:1px solid var(--guide-border);
+  font-size:11px;color:var(--guide-muted);
+  line-height:1.7;
+}
+
+/* ══════════════════════════════
+   검색바
+══════════════════════════════ */
+.ssh{
+  background:rgba(12,17,32,.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:10px 24px;
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  border-bottom:1px solid var(--bd);
+  position:sticky;top:54px;z-index:89;
+  transition:background .3s;
+}
+[data-theme="light"] .ssh{
+  background:rgba(240,244,250,.92);
+}
+
+.sgs{flex:1;min-width:200px;max-width:360px;position:relative}
+.sgs input{
+  width:100%;
+  background:var(--bg4);
+  border:1.5px solid var(--bd2);
+  color:var(--tx);
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:13px;
+  padding:8px 36px 8px 14px;
+  border-radius:24px;
+  outline:none;
+  transition:all .25s;
+}
+.sgs input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--a-glow), inset 0 0 0 1px var(--accent);
+  background:var(--card);
+}
+.sgs input::placeholder{color:var(--tx3)}
+.sgs .si{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  color:var(--tx3);font-size:14px;pointer-events:none;
+  transition:color .2s;
+}
+.sgs:focus-within .si{color:var(--accent)}
+
+.saf{display:flex;flex-wrap:wrap;gap:5px;align-items:center;flex:1}
+.saf-tag{
+  background:rgba(0,196,255,.1);
+  border:1px solid rgba(0,196,255,.3);
+  color:var(--accent);
+  font-size:11px;padding:3px 10px 3px 11px;
+  border-radius:20px;cursor:pointer;
+  display:flex;align-items:center;gap:5px;font-weight:600;
+  transition:all .15s;
+}
+.saf-tag:hover{
+  background:rgba(239,68,68,.12);
+  border-color:rgba(239,68,68,.4);
+  color:#f87171;
+}
+
+.sbtn-rst{
+  background:transparent;
+  border:1px solid var(--bd2);
+  color:var(--tx3);
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:12px;font-weight:600;
+  padding:7px 16px;border-radius:20px;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.sbtn-rst:hover{
+  border-color:rgba(239,68,68,.5);
+  color:#f87171;background:rgba(239,68,68,.06);
+}
+
+/* ══════════════════════════════
+   상태바
+══════════════════════════════ */
+.srb{
+  padding:7px 24px;
+  background:var(--card2);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:16px;
+  font-size:11.5px;color:var(--tx2);
+}
+.stat-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 11px;border-radius:12px;
+  background:var(--bg4);border:1px solid var(--bd);
+}
+.stat-pill .sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.stat-pill strong{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:600;
+  color:var(--accent);
+  text-shadow:0 0 10px var(--a-glow);
+}
+.stat-pill.v strong{color:var(--violet);text-shadow:0 0 10px var(--v-glow)}
+.srb .filt-cnt{
+  margin-left:auto;
+  font-size:11px;color:var(--tx3);
+}
+.srb .filt-cnt strong{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:600;color:var(--tx2);
+}
+
+/* ══════════════════════════════
+   테이블
+══════════════════════════════ */
+.stw{overflow:auto;background:var(--bg)}
+#stbl{width:100%;border-collapse:collapse;font-size:13px}
+
+/* 헤더 */
+#stbl thead th{
+  background:var(--card);
+  border-bottom:1px solid var(--bd);
+  white-space:nowrap;padding:0;
+  position:sticky;top:0;z-index:10;
+}
+.sthi{
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  padding:10px 14px;
+}
+.sthl{
+  font-size:10.5px;font-weight:700;color:var(--tx3);
+  letter-spacing:.8px;text-transform:uppercase;
+}
+
+/* 필터 버튼 */
+.sfb{
+  background:none;border:none;color:var(--tx3);
+  cursor:pointer;font-size:11px;padding:1px 4px;
+  border-radius:4px;line-height:1;transition:all .15s;
+}
+.sfb:hover{background:var(--bg4);color:var(--tx)}
+.sfb.on{
+  background:rgba(251,146,60,.15);
+  color:#fb923c;font-weight:700;
+  box-shadow:0 0 6px rgba(251,146,60,.2);
+}
+
+/* 정렬 버튼 */
+.sort-btn{
+  background:none;border:none;color:var(--tx3);
+  cursor:pointer;font-size:10px;padding:1px 3px;
+  border-radius:3px;transition:all .15s;
+}
+.sort-btn:hover{color:var(--tx)}
+.sort-btn.asc,.sort-btn.desc{color:var(--accent)}
+
+/* 바디 행 */
+#stbl tbody tr{
+  border-bottom:1px solid var(--bd);
+  transition:background .12s, box-shadow .12s;
+  background:var(--bg);
+  position:relative;
+}
+#stbl tbody tr:nth-child(even){background:var(--bg2)}
+#stbl tbody tr:hover{
+  background:var(--row-hover) !important;
+  box-shadow:inset 3px 0 0 var(--accent);
+}
+
+#stbl td{
+  padding:9px 14px;
+  vertical-align:middle;
+  border-right:1px solid var(--bd);
+  text-align:center;white-space:nowrap;
+}
+#stbl td:last-child{border-right:none}
+#stbl td.tl{text-align:left}
+
+/* 대학명 */
+.univ-name{
+  font-size:13.5px;font-weight:700;
+  color:var(--tx);letter-spacing:-.2px;
+}
+
+/* 순위 */
+.rnum{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--tx3);
+}
+
+/* 지역 뱃지 */
+.rbadge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:500;
+  border:1px solid transparent;
+  transition:all .15s;
+}
+.rdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* 보고서 버튼 */
+.rb{
+  display:inline-block;
+  padding:5px 18px;border-radius:6px;
+  font-size:11.5px;font-weight:700;
+  cursor:pointer;border:1px solid transparent;
+  transition:all .2s;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:.5px;
+}
+.rb26{
+  background:rgba(14,165,233,.12);
+  color:#38bdf8;
+  border-color:rgba(14,165,233,.25);
+}
+.rb26:hover{
+  background:rgba(14,165,233,.22);
+  border-color:#38bdf8;
+  box-shadow:0 0 14px rgba(14,165,233,.3);
+  transform:translateY(-1px);
+}
+.rb25{
+  background:rgba(139,92,246,.12);
+  color:#a78bfa;
+  border-color:rgba(139,92,246,.25);
+}
+.rb25:hover{
+  background:rgba(139,92,246,.22);
+  border-color:#a78bfa;
+  box-shadow:0 0 14px rgba(139,92,246,.3);
+  transform:translateY(-1px);
+}
+.rb-none{
+  display:inline-block;padding:5px 10px;
+  border-radius:6px;font-size:11px;
+  color:var(--tx3);
+  border:1px dashed var(--bd);
+}
+
+/* 빈 결과 */
+.no-res{
+  text-align:center;padding:80px 20px;color:var(--tx3);
+}
+.no-res .nr-icon{font-size:40px;margin-bottom:12px;opacity:.5}
+.no-res p{font-size:13px}
+
+/* ══════════════════════════════
+   PDF 뷰어 모달
+══════════════════════════════ */
+#pdfOverlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;
+}
+#pdfOverlay.open{display:flex}
+#pdfModal{
+  background:var(--card);
+  border:1px solid var(--bd2);
+  border-radius:14px;
+  box-shadow:0 0 0 1px var(--bd), 0 30px 80px rgba(0,0,0,.8);
+  width:min(1000px,95vw);height:90vh;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.pm-head{
+  padding:13px 18px;
+  background:var(--card2);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.pm-title{
+  flex:1;font-size:13px;font-weight:700;color:var(--tx);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.pm-yr{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.pm-yr-26{background:rgba(14,165,233,.15);color:#38bdf8;border:1px solid rgba(14,165,233,.3)}
+.pm-yr-25{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3)}
+.pm-toolbar{
+  padding:7px 18px;background:var(--bg3);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;
+}
+.pm-tb-btn{
+  padding:4px 14px;border-radius:20px;
+  font-size:11px;font-weight:600;
+  border:1px solid var(--bd2);background:var(--bg4);
+  color:var(--tx2);cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif;
+  transition:all .15s;white-space:nowrap;
+}
+.pm-tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pm-tb-btn.active{
+  background:rgba(0,196,255,.15);
+  border-color:var(--accent);color:var(--accent);
+}
+.pm-notice{font-size:11px;color:var(--tx3);margin-left:4px}
+.pm-notice strong{color:var(--tx2)}
+.pm-body{flex:1;position:relative;overflow:hidden;background:#333}
+.pm-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:var(--bg);z-index:5;gap:16px;
+}
+.pm-spin{
+  width:40px;height:40px;border-radius:50%;
+  border:3px solid var(--bd2);
+  border-top-color:var(--accent);
+  animation:spin .8s linear infinite;
+  box-shadow:0 0 16px var(--a-glow);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pm-loading p{font-size:12px;color:var(--tx2)}
+#pdfFrame{width:100%;height:100%;border:none;display:block}
+.pm-close{
+  width:32px;height:32px;border:none;
+  background:rgba(255,255,255,.08);
+  border-radius:50%;cursor:pointer;
+  font-size:16px;color:rgba(255,255,255,.7);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .15s;
+}
+.pm-close:hover{background:rgba(239,68,68,.3);color:#fff}
+
+/* ══════════════════════════════
+   SDD 드롭다운
+══════════════════════════════ */
+.sdd{
+  position:fixed;background:var(--card);
+  border:1px solid var(--bd2);
+  border-radius:12px;
+  box-shadow:0 0 0 1px var(--bd), 0 20px 60px rgba(0,0,0,.6);
+  z-index:9999;width:290px;display:none;
+  max-height:440px;flex-direction:column;
+  backdrop-filter:blur(12px);
+}
+.sdd.open{display:flex}
+.sdd-hd{
+  padding:13px 15px 11px;
+  border-bottom:1px solid var(--bd);
+  flex-shrink:0;background:var(--card2);
+  border-radius:12px 12px 0 0;
+}
+.sdd-title{font-size:11.5px;font-weight:800;color:var(--accent);margin-bottom:8px;letter-spacing:.3px}
+.sdd-si{
+  width:100%;background:var(--bg);
+  border:1.5px solid var(--bd2);color:var(--tx);
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:12px;padding:6px 11px;
+  border-radius:8px;outline:none;
+  transition:border-color .2s;
+}
+.sdd-si:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--a-glow)}
+.sdd-acts{display:flex;gap:6px;margin-top:8px}
+.sdd-a{
+  flex:1;background:var(--bg4);
+  border:1px solid var(--bd2);color:var(--tx2);
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:11px;font-weight:600;padding:5px 8px;
+  border-radius:6px;cursor:pointer;transition:all .15s;
+}
+.sdd-a:hover{background:rgba(0,196,255,.1);border-color:var(--accent);color:var(--accent)}
+.sdd-list{overflow-y:auto;flex:1;padding:6px 0;background:var(--card)}
+.sdd-list::-webkit-scrollbar{width:4px}
+.sdd-list::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+.sdd-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 15px;cursor:pointer;transition:background .1s;
+}
+.sdd-item:hover{background:var(--bg4)}
+.sdd-item input[type=checkbox]{
+  width:14px;height:14px;cursor:pointer;
+  accent-color:var(--accent);flex-shrink:0;
+}
+.sdd-item label{
+  flex:1;cursor:pointer;color:var(--tx);
+  font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.sdd-item .scnt{
+  font-size:10px;color:var(--tx3);
+  font-family:'JetBrains Mono',monospace;
+  flex-shrink:0;background:var(--bg4);
+  padding:1px 6px;border-radius:4px;
+}
+.sdd-none{padding:20px;text-align:center;color:var(--tx3);font-size:12px}
+.sdd-ft{
+  padding:11px 15px;border-top:1px solid var(--bd);
+  display:flex;gap:8px;flex-shrink:0;
+  background:var(--card2);border-radius:0 0 12px 12px;
+}
+.sdd-ok{
+  flex:1;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  border:none;color:#000;
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:12px;font-weight:700;padding:7px;
+  border-radius:8px;cursor:pointer;transition:all .2s;
+  box-shadow:0 0 12px var(--a-glow);
+}
+[data-theme="dark"] .sdd-ok,.sdd-ok{color:#000}
+.sdd-ok:hover{box-shadow:0 0 20px var(--a-glow);transform:translateY(-1px)}
+.sdd-cl{
+  background:var(--bg4);border:1px solid var(--bd2);
+  color:var(--tx2);font-family:'Noto Sans KR',sans-serif;
+  font-size:12px;font-weight:600;padding:7px 15px;
+  border-radius:8px;cursor:pointer;transition:all .15s;
+}
+.sdd-cl:hover{border-color:rgba(239,68,68,.5);color:#f87171}
+
+/* ══════════════════════════════
+   푸터
+══════════════════════════════ */
+footer{
+  background:var(--card2);
+  border-top:1px solid var(--bd);
+  padding:11px 24px;
+  font-size:11px;color:var(--tx3);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;
+}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ══════════════════════════════
+   라이트모드 개별 보정
+══════════════════════════════ */
+[data-theme="light"] .sfb:hover{background:var(--bg4);color:var(--tx)}
+[data-theme="light"] .sdd-item:hover{background:var(--bg4)}
+[data-theme="light"] #stbl tbody tr:hover{background:var(--row-hover) !important}
+[data-theme="light"] .pm-close{background:rgba(0,0,0,.08);color:var(--tx)}
+[data-theme="light"] .rb26{background:rgba(14,165,233,.08);color:#0284c7}
+[data-theme="light"] .rb26:hover{background:rgba(14,165,233,.15);border-color:#0284c7;box-shadow:0 0 14px rgba(14,165,233,.15)}
+[data-theme="light"] .rb25{background:rgba(109,40,217,.08);color:#6d28d9}
+[data-theme="light"] .rb25:hover{background:rgba(109,40,217,.15);border-color:#6d28d9;box-shadow:0 0 14px rgba(109,40,217,.15)}
+[data-theme="light"] .sfb.on{background:rgba(251,146,60,.12);color:#ea580c}
+[data-theme="light"] .hbadge{color:#fff}
+[data-theme="light"] .sdd-ok{color:#fff}
+</style>
+</head>
+<body>
+<header>
+  <div class="hbrand"><span class="hbadge">맥에듀테크 김휘창입시컨설팅</span>
+    <div><div class="htitle">2026/2025 선행학습 영향평가 결과보고서 검색기</div>
+    </div>
+  </div>
+  <div class="hmeta">
+    <span class="hmeta-cnt">총 <strong id="totalCnt">—</strong>개 대학</span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
+      <span class="icon" id="themeIcon">☀️</span>
+      <span id="themeLabel">라이트</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── 접기/펴기 활용 가이드 ── -->
+<div id="guideWrap" style="background:var(--guide-bg);border-bottom:1px solid var(--bd);position:sticky;top:50px;z-index:90">
+  <button id="guideToggle" onclick="toggleGuide()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:none;border:none;color:var(--tx2);cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;text-align:left;gap:8px">
+    <span style="display:flex;align-items:center;gap:7px">
+      <span style="font-size:13px">📋</span>
+      <span>선행학습영향평가보고서 활용법 — 논술 준비 연간 로드맵</span>
+      
+    </span>
+    <span id="guideArrow" style="font-size:12px;transition:transform .25s;display:inline-block">▼</span>
+  </button>
+  <div id="guideBody">
+    <div class="guide-inner">
+    <!-- 3단 카드 -->
+    <div class="guide-grid">
+
+      <!-- 카드 1 -->
+      <div class="guide-card c1">
+        <div class="guide-label">3월 31일까지</div>
+        <div class="guide-title">선행학습영향평가보고서</div>
+        </div>
+        <p class="guide-desc">
+          논술의 <strong style="color:var(--tx)">기출문제집</strong>이나 다름없는 공식 자료. 출제의도·모범답안·배점방식·제시문 출전이 모두 담겨 있어 희망 대학 <strong style="color:var(--tx)">3년치</strong>를 우선 확인하는 것이 정석이다.
+        </p>
+        <div class="guide-tips">
+          💡 제시문 출전을 확인하면 자주 인용되는 도서·논문의 특징을 파악할 수 있다.<br>
+          💡 교과서 외 출전 → <em style="color:var(--tx2)">'고3 필독서'</em>로 활용 (철학·경제·소설 등)
+        </div>
+      </div>
+
+      <!-- 카드 2 -->
+      <div class="guide-card c2">
+        <div class="guide-label">5 ~ 7월</div>
+        <div class="guide-title">논술 가이드북</div>
+        </div>
+        <p class="guide-desc">
+          당해 전형방법·모집인원·평가요소 대비법·합격자 분포·논술 해설까지 포함한 <strong style="color:var(--tx)">대학별 팁 모음집</strong>. 대부분 홈페이지 PDF로 공개된다.
+        </p>
+        <div class="guide-tips">
+          💡 출제 의도 파악이 핵심 — 자신의 배경지식보다 <em style="color:var(--tx2)">제시문 근거</em>로 논지를 전개해야 한다.<br>
+          💡 핵심 논지를 제한된 분량 안에 간결하게 요약하는 연습 병행 필요
+        </div>
+      </div>
+
+      <!-- 카드 3 -->
+      <div class="guide-card c3">
+        <div class="guide-label">7 ~ 8월</div>
+        <div class="guide-title">모의논술</div>
+        </div>
+        <p class="guide-desc">
+          당해 출제유형을 반영한 <strong style="color:var(--tx)">실전 체험</strong>. 온라인·오프라인으로 나뉘며, 일부 대학은 개별 채점 결과와 출제교수 해설 영상까지 제공한다.
+        </p>
+        <div class="guide-tips">
+          💡 채점 서비스를 제공하는 대학 우선 신청 — 자신의 수준을 객관적으로 파악할 수 있다.<br>
+          💡 경희대·세종대·경기대·가톨릭대·성신여대 등은 해설영상·가이드북까지 제공
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="ssh">
+  <div class="sgs"><input type="text" id="sgSrc" placeholder="대학명 검색..." oninput="onSearch()"><span class="si">🔍</span></div>
+  <div class="saf" id="safWrap"></div>
+  <button class="sbtn-rst" onclick="resetAll()">↺ 초기화</button>
+</div>
+<div class="srb">
+  <span class="stat-pill"><span class="sdot" style="background:#38bdf8"></span>2026 보고서 <strong id="cnt26">—</strong>개</span>
+  <span class="stat-pill v"><span class="sdot" style="background:#a78bfa"></span>2025 보고서 <strong id="cnt25">—</strong>개</span>
+  <span class="filt-cnt">검색결과 <strong id="filtCnt">—</strong>개</span>
+</div>
+<div class="stw">
+<table id="stbl"><thead><tr>
+  <th><div class="sthi"><span class="sthl">순위</span></div></th>
+  <th><div class="sthi"><span class="sthl">대학명</span><button class="sfb" data-col="name">▾</button><button class="sort-btn" data-sort="name">⇅</button></div></th>
+  <th><div class="sthi"><span class="sthl">지역</span><button class="sfb" data-col="region">▾</button><button class="sort-btn" data-sort="region">⇅</button></div></th>
+  <th><div class="sthi"><span class="sthl">2026 보고서</span><button class="sfb" data-col="y26s">▾</button></div></th>
+  <th><div class="sthi"><span class="sthl">2025 보고서</span><button class="sfb" data-col="y25s">▾</button></div></th>
+</tr></thead><tbody id="stbody"></tbody></table>
+<div class="no-res" id="noRes" style="display:none"><div class="nr-icon">🔎</div><p>검색 결과가 없습니다.</p></div>
+</div>
+<footer>
+  <span>2026/2025학년도 대학별 선행학습 영향평가 결과보고서</span>
+  <span>맥에듀테크 김휘창입시컨설팅 · ipsiai.com</span>
+</footer>
+<!-- PDF 뷰어 모달 -->
+<div id="pdfOverlay">
+  <div id="pdfModal">
+    <div class="pm-head">
+      <span class="pm-yr" id="pmYrBadge"></span>
+      <span class="pm-title" id="pmTitle"></span>
+      <button class="pm-close" onclick="closeViewer()">✕</button>
+    </div>
+    <div class="pm-toolbar">
+      <button class="pm-tb-btn active" id="btnEmbed">📄 뷰어 내장</button>
+      <button class="pm-tb-btn" id="btnNew" onclick="openNew()">🔗 새탭열기 · 다운로드</button>
+      <span class="pm-notice">※ 뷰어 보기 전용 · 다운로드는 <strong>새탭열기</strong> 이용</span>
+    </div>
+    <div class="pm-body">
+      <div class="pm-loading" id="pmLoading"><div class="pm-spin"></div><p>PDF 불러오는 중...</p></div>
+      <iframe id="pdfFrame" onload="onLoad()" allow="autoplay"></iframe>
+    </div>
+  </div>
+</div>
+<!-- SDD -->
+<div id="sdd" class="sdd">
+  <div class="sdd-hd">
+    <div class="sdd-title" id="sddTitle">필터</div>
+    <input class="sdd-si" id="sddSrc" type="text" placeholder="검색...">
+    <div class="sdd-acts">
+      <button class="sdd-a" id="sddAll">전체선택</button>
+      <button class="sdd-a" id="sddNone">전체해제</button>
+      <button class="sdd-a" id="sddCl">닫기</button>
+    </div>
+  </div>
+  <div class="sdd-list" id="sddList"></div>
+  <div class="sdd-ft"><button class="sdd-ok" id="sddOk">적용</button></div>
+</div>
+<script>
+// PDF 파일 ID는 경기도교육청 원본 PDF에서 자동 추출
+// 총 206개 대학 · Google Drive 직접 연동
+const RAW = [
+  ['가천대학교','경기도','1iYPI-96PX4OnwzX07zn-N11Rj82XQPYO','1BQ-zY9R7eRJRVTrgy9T8rr_6gVsYNc6p'],
+  ['가톨릭관동대학교','강원특별자치도','1uQDJoNFurA2bDdgeNBSDiMhDTqqicTMg','1S0iY5YK34v1KBGjknPKxhJmODin0fzKa'],
+  ['가톨릭꽃동네대학','충청북도','1MlzSBdV21zsgf92q8k9unc7vVqPyJeMe','1auwEl_EohnXZq0CDw8pihj7Bgy_IneOL'],
+  ['가톨릭대학교','경기도','1zAwS_oXc73jw7X98ZTsumjAY5dv_Bm-9','1UydOri9uuft5Rgo93GSP4JENq7ltOFlP'],
+  ['감리교신학대학교','서울특별시','1_yBRs4aG60_Nalg1TnJumGytAbKR2D2j','1VcmFLhYvMFKGw2kgntmdlp_KAEelNs-P'],
+  ['강남대학교','경기도','1kDQriI5cQqwBXZIHlP1RPHjpNyr7FH_y','1I8yED6NEoqcZePM-bnuzHvLNRxmL26uK'],
+  ['강서대학교','서울특별시','1KQFepuhij0gmr_TQkNzapmiY7MYf8GjI','148v9db3OftfpaPZY9CiT96BKeCa4zF1s'],
+  ['강원대학교','강원특별자치도','1SATNlpMvZ6tWrhdDFNaEftQZ5EDpLPd-','1ydtbIdOrvb-M71CmDoXKUROPlAIEdA7_'],
+  ['강원대학교(강릉)','강원특별자치도','1Y1vCKyXXhPmtvL5wXgkCvv_QxwHeoBus','16S1VwzPRYQlzO_-mdKdtf_xruZPJOVYL'],
+  ['건국대학교(글로컬)','충청북도','1FA-Y1EAPEeFi9oz_V6RrJL5EKgvLjrXc','1ZmV8jtmxwXP_P6zrTtG5wlCBd2igoyOb'],
+  ['건국대학교(서울)','서울특별시','1ADhXSG5VZSchdtzsZliUBaaCMqeZBGuQ','1jq39fshR8P6vmXYggDaFWVOKDhgoSlyU'],
+  ['건양대학교','충청남도','1uDF6BIzyF0Mj_2WiC6qQi6WZQZdnmipf','1Nr5TVes9Hf3O_wt463gfsVT-iXCkPQbm'],
+  ['경기대학교','경기도','1YwCKTVs-Rt2pf2CpY9aEKpzqcj5pEchZ','15RYn3T1mDuXPRAfJ6UBYb5LJqH5r534t'],
+  ['경남대학교','경상남도','1fEFKrHqelLLfilUMPT70mPAUZMJ0AQdL','1aBbwHATaixfpaVg3UtuP4FimOUnxGG4z'],
+  ['경동대학교','강원특별자치도','1z_kVgQA-MNQAeqXMVFLJi2idyfnUEuAj','10ENZu1YfaacE_LZdyRSWTp6eycZ-NOd4'],
+  ['경북대학교','대구광역시','1MbUf4-eBTpc4k28a4DvSHsIWhtJBLgJo','10d5DGqsux7TQ2rxSSMmYSZr5CKuWp3lQ'],
+  ['경상국립대학교','경상남도','12oZfGf2cZFmTdsUWYHin2RcoSA5qhz2G','1mi-idkhDL9fRShEYSuFGuznEbpYJOaxf'],
+  ['경성대학교','부산광역시','1iGwE2akOiMrCGMXy8hPRtrKGE8FS_kmB','1f4atGfOtGBO8nQy2WCP9Gv8kPrXqdu-q'],
+  ['경운대학교','경상북도','1KmEIWyRJDFXwv8uW3GZR_UokzVuy_g9K',''],
+  ['경인교육대학교','인천광역시','1mkiESmHvxXN-kqwxWTj9cPw2GsMYbPM9','1I5pfFSiZYkI8TgUrhH6E6CgamLu-8C57'],
+  ['경일대학교','경상북도','1VjADgpZ3P1fNWuTBXIUTJxDZQY-C95g3','1PorWCD9HiTVREIT0MkgndF-QKYWB28Au'],
+  ['경찰대학','특수목적대학','1gakXvgLKlGWfh3KyRxCHcGjkJAB51FM5','1qNV4M1omwjCev-qmR-03lr6t3vvypDDY'],
+  ['경희대학교','서울특별시','1NEPqx_zFlNKsEn-xTHzGmioSJEZOg2-O','13DKGeejpMoScaSU7iDw_clJa5MtSyikx'],
+  ['계명대학교','대구광역시','1Ettll0CmJn8xbqZdC3xw3_gbOYBCZggb','18ZAZOuaw4piNamVfDyjVd9aCCy3f2TD4'],
+  ['고려대학교(서울)','서울특별시','1iy4Pw4BthPLkb7RKV5KPXyad37G3MC49','1r9l1Lz3Xmm31tjThE7yprLmAqIlWKFrq'],
+  ['고려대학교(세종)','세종특별자치시','1-sYP8eypRI8XyTbmOm2_7bUbTIPFHHEs','1kekFbfYDzQmYFNzwsD9SG7lhNHllrjiQ'],
+  ['고신대학교','부산광역시','1_L24jdcnpWtcGY2JThm_ur6mxMXdlHIg','12WqPcybOs83R-zT0dq5dEHGJBPhtwUsk'],
+  ['공군사관학교','특수목적대학','1WaIPfS4Fv0qBkA-e-JglWcB69x3MCXpy','1G33Bc_j22cnUbjxPIWRj4sjZY5CVPRq2'],
+  ['공주교육대학교','충청남도','1VZIJ23GALhZNuWKk9hpxse7Dhs96ruXd','1oAb3aramUICVmsNlyyB7N5Bt-tNEbATk'],
+  ['광신대학교','광주광역시','1bSOSAnZu65aR7oNiykRghEpzLu1zoxj0','1TqjVdBUmzR3hB_G4cyyOgTo7slZKHi3h'],
+  ['광운대학교','서울특별시','1QiCsbRkjsGE3Fqy0Yevv3fuJLiv-Qo0J','1El3fwYg9jWcXmdzrNKfiDt6XXrGTNDKf'],
+  ['광주가톨릭대학교','광주광역시','1W_FegSioYolCMSApVfNkKfclJ4pb1YfW','1lXhiidCoakA3N1l-EXNnM8m-L-k2kohh'],
+  ['광주과학기술원','특수목적대학','1-AT2NUuyITA6ACBFB3yc57M0GlAFLSnT','17Fs1w1dCpoDTKQmyxTghNHP24asu3Fn0'],
+  ['광주교육대학교','광주광역시','1Kp5voT-J39dz-9Fs0XC7tzFHg3dP9SqQ','1ZgcstzqM1b_d3qF3uyLrljBdHjDwt9eR'],
+  ['광주대학교','광주광역시','1Iuk7TnEwlXeD8mjOwGHOUDgn5jhsUZsW','1xJdYsCoclH0XYljTBPJjiFwF4Y7hOF8f'],
+  ['광주여자대학교','광주광역시','1aG78YJuS56IKXbj2SQQljyyGuMF1mcXc','1ZOp1gk46bVV_33uJi1nipJHQJ_LO4OdD'],
+  ['국군간호사관학교','특수목적대학','1gbMh5HsF0P6kIg3zXXzm2z2yCChiKq83','1f_8sT9qar6kiUVsxv4N391DO8_rGiFf8'],
+  ['국립경국대학교','경상북도','1L3UjeLlILhs4M9i__2JriHx_uMdEFPcS','1d7GZKVsjN9z2-SN1UqD7Fr23UNz731Tc'],
+  ['국립공주대학교','충청남도','1wZqSklMBaFS1Bd-f5tKdpwJgBL-VqaZV','1eZw6rlJuvK6D_X36tyzty_NprnSmQ0y2'],
+  ['국립군산대학교','전북특별자치도','','1wJfoY-3c1GjJclUvYaGPwMZbfBEKCelo'],
+  ['국립목포대학교','전라남도','1TVGHKVuVZkKL2a0SMt1oT-qOMtSueD9C','12shaUzwkFheh-xJpJ4qZ2g5DGJEoBHAr'],
+  ['국립목포해양대','전라남도','1r70kC26nhHG8TwDEUIIPQKwg0XVae1_A','1PqkMkHMZtWfELNYylX_JIYn8L0vvHWiE'],
+  ['국립순천대학교','전라남도','1pHlWe2yMBCIYFABMn0Ui1ezEszehpOn4','1FI_g49-bRwBqsbbPlWZrd0oM1uYBZoCp'],
+  ['국립창원대학교','경상남도','1a4J9OJ2XZuGmISch7-84rsMcyT-NG1qQ',''],
+  ['국립한국교통대','충청북도','1UaNBlfhljV-JN_NUlUhGtWzOE_C4hLnA','1XV68xGdeZlk8iASYCFXC0wDEDKsoTX0X'],
+  ['국립한국해양대','부산광역시','1ugUOjKRxr7pZWY_zXxh8cpFFpWsZxwKG','18XWPWagw4RbfYaLveCXhWTcX0deGfF7R'],
+  ['국립한밭대학교','대전광역시','1B9N0ze7MHaCOCb9pVROuPNIgAywX8Eez','1flFG5w3vdlnhQx5n9GjeRu54vOHNdHN_'],
+  ['국민대학교','서울특별시','1s90hzAh9k407D1tcKZHmwjQphYyrqsBF','1fy8O0Cah76o7O4GAirKiVwZzOY2liMZF'],
+  ['극동대학교','충청북도','1ddBUJGEpkOJP0WGNbbnECncw6UBSqhz_','1zUkGyxo-Pb4DUsBtO4K08kLXt-yJqe9j'],
+  ['금강대학교','충청남도','','1L0NNk-NqjiQ_IewjBmmgl2Z99GiYcPKC'],
+  ['김천대학교','경상북도','1SZoDHKozA1Lej2eRFPnbgyJ6YHr8bfeQ','1AZnqcpHaQ8uKd8BBNqDYxkTZIp8P5YL7'],
+  ['나사렛대학교','충청남도','11ewmGw_lLSrHAMto9L5X1NVrq2-TvFOj','1IcUsId7EXn7cv2-p2HN7QslOYInCiVOz'],
+  ['남부대학교','광주광역시','1w-bvWVryMZ69ZSF47e248MlQXt8mO3ny','1seiE3TTBNAfDH4vMzxLFJKOfcRDJ3Zpw'],
+  ['남서울대학교','충청남도','1ixdZyJTbpsTVTuT0k6_pBTJcwYDJbijo','1tE0Nt8lub_VF9V6kK1sKuDp9oDswhgL5'],
+  ['단국대학교(죽전)','경기도','1lxpaeiJoD2flAv-o6MJHcFQvSMmVRzPU','1WcSXRYFdyL0d_XXEBPyQVDsiEc_wMtoF'],
+  ['단국대학교(천안)','충청남도','1lxpaeiJoD2flAv-o6MJHcFQvSMmVRzPU','1WcSXRYFdyL0d_XXEBPyQVDsiEc_wMtoF'],
+  ['대구가톨릭대학','대구광역시','1DHX9ahuvNLgBzpFcyhXog0yPTRSKYbjI','175u4aXDPSTGqlwVkhJntHyIvfoRR6oye'],
+  ['대구경북과기원','특수목적대학','1lWX3nkalDdMW_pnnpfjeU_ksUk2ygwm3','1qqeAvSqCIqWrHnIuSKAnsJqNnOlhJ-4r'],
+  ['대구교육대학교','대구광역시','1PxB9SSIXcG2D_m2k9ErmGcneibnxESRd','1fT5f6hTYB2gwqbaAgfnFqH61oqKWfJmj'],
+  ['대구대학교','대구광역시','1SQDYCgFfiRZ_8BdIzlg8ZWyz5srCLFaK','1lOiCDu_Ly5QdQu0evGMAGkkWtqGBte26'],
+  ['대구예술대학교','대구광역시','14XaqfSnSUW-O3SotB6sV5JyxdFH1YO1T',''],
+  ['대구한의대학교','대구광역시','1QnzZcYFDR-hxCKGtXhiD9UeWcN8KHo_y','1j8s9Su4a_tkUlvuBwRcaMKl0unphZtKi'],
+  ['대신대학교','대구광역시','1w9MddXpUzigqbVt31stO7lTeaTn2KOs8','1WkA1o1E-TimWVT2h3aZ_Y_snv6aOoQGJ'],
+  ['대전가톨릭대학','충청남도','1yEVcdxHVhjIRKkjv2shgO-P8MhBH0O_T','13gq0J_hOpII2wTnT634pQhUI-lFiCtFJ'],
+  ['대전대학교','대전광역시','1GSqFZRjnjhbhXsxre4LCdHS7j1zd-OHF','1XL6foznPU35uaj0wzHPuVz5Ito7ysnNQ'],
+  ['대전신학대학교','대전광역시','1odq24OjAgrjcbck0_40laQ2NyNOiMwov',''],
+  ['대진대학교','경기도','1HtY5NXtHEce10owPPdLIfRY3y7NRayM5','1BZlrY196sSw8S4hF-BjXDFTBXfIqrFwg'],
+  ['덕성여자대학교','서울특별시','1a8hBiMIKwUJ_SbySwlTP-7itP4FsOlnR','1psIY03Q7Qr__PnBOzMXPT1glXo29rB8I'],
+  ['동국대학교(WISE)','경상북도','1U9jwJ3nCwWvzdgx8xOe11Vb3d7IRzzaE','15syEWaHNBNQRfcCk95Q-6O3A8lSBlnYB'],
+  ['동국대학교(서울)','서울특별시','18hsa6XlafVEoUbY0Bm4HHwvGvHi7lJL7','1x4vNAb2ntPJs9c3P5cdKZnMg29snHX2t'],
+  ['동덕여자대학교','서울특별시','12Vj8h6frmc3sXj9MyiXBKqdc96X7wLAV','1oFeKxk8SL761GbA3SBT8MSKRwiXqhwBq'],
+  ['동명대학교','부산광역시','1QdXNkSISzbjxqMMJQ_F8-lQpSmKfblon','1XOQZOTSYal6TwHgOnKmDW1g9k5SWr1rQ'],
+  ['동서대학교','부산광역시','1CO0jZDNkvyTK4y91bLKOu56fafGkww_E','1yb6mFGQvhv5lBiRu0D0Jp1mN3PtNQnV3'],
+  ['동신대학교','전라남도','1eOukBJJyFHtM5CfpxhsbxqL9LBHoQCKc','1ECUC8z1nPlv6tO4hN1C4BSHkiTsBzFmq'],
+  ['동아대학교','부산광역시','1HECmA-lYdl6bb4ztWY-NvwSk_1oWLUHl','1y-WuBAb8tZv6VZq8Q6DJl0ovgMxVbeF0'],
+  ['동양대학교','경상북도','1gmdMHtAVEuFSD-2kA6G-PgUebxlIgRJa','1_bLI0VKnyG0fiUTrFqGkg9isZcnIEKQ0'],
+  ['동의대학교','부산광역시','1Eq9XInQ0q8DNtKzqr3U76swsE6DXwMs1','1QYW7MUYbKfjOYRLFPJ-jDI6mFEtPrBSs'],
+  ['루터대학교','경기도','1facyZYn81W2VFWMkduYmfGT51JiAXC2a','1kYB4MbMdHsAezbEA3apR-P5q_yphHLmj'],
+  ['명지대학교(서울)','서울특별시','1wD0VimJndRGVZ52KfeIqFvQpq1ptY6E5','1SfT5nBfdiW1laqN9NuTrzyHGCKuVG6sI'],
+  ['명지대학교(용인)','경기도','1wD0VimJndRGVZ52KfeIqFvQpq1ptY6E5','1SfT5nBfdiW1laqN9NuTrzyHGCKuVG6sI'],
+  ['목원대학교','대전광역시','1VeGLwBxpOS003nQ7BlziMBwL85-t5s57','1HJlnz7HAsyhvAAx4Rb5-IRKzcHOxoIE_'],
+  ['목포가톨릭대학','전라남도','1ZPHA1GLSaFAWx1qT9rvcAjMgjSkf0Iye',''],
+  ['배재대학교','대전광역시','1t0dpg37vSCykN7iaNmBPEXd0jhCLSZOm','1SoCFOLcpv-d0mS3izFMaITu44W0yjRKc'],
+  ['백석대학교','충청남도','1Hhb2h3OWMrV5YHeelr5FD96snDDy2SMC','1XFvA7L0QMHdUVrW5M0qdRw9v9zG6ALAF'],
+  ['부산가톨릭대학','부산광역시','1x81Y5UtUwB8R_uKqBHKKgzqSTPCMdkVH','11mXZ4oSSIGKF5M1_EODXDegLEdvE1LPt'],
+  ['부산교육대학교','부산광역시','1anC9GM6LPJ-ZwkgmpMW8X4OPEDw0-bZ1','1GjyPRpK915s4Y4nhvHbe41EQE4MT37Sk'],
+  ['부산대학교','부산광역시','1HiIlwQITE2KYGyKV0Aa3X8QNY2yaJJ27','1FgovK4cEUR2x8DcZMroYrGE6SXH4XJVe'],
+  ['부산외국어대학','부산광역시','1jHBM7UwHKFWmwkNCEATKmgWohfo54Mqk','1loC7078a7IP-zTtFK3t2u9t1w8EFOgWO'],
+  ['부산장신대학교','경상남도','19XiBr4-katBgxLEDOQbzSiP-ZgqscIir','1qgrZJ21Mhk407UlKotOa5rujpJFfrDBI'],
+  ['삼육대학교','서울특별시','1Q8WIcNO-YRe8e6rVUpHB3sOOzezJypLq','1KXFa1yQBEb21XFEfgOZCoNibUIMxEEji'],
+  ['상명대학교(서울)','서울특별시','1Wvm0wKX8fLR3ZPS0YsmBnVU0Ry3e8rk5','1Z_hzuZTDRS0SHjOTL7mffcmZu6RYlFmv'],
+  ['상명대학교(천안)','충청남도','1Wvm0wKX8fLR3ZPS0YsmBnVU0Ry3e8rk5','1Z_hzuZTDRS0SHjOTL7mffcmZu6RYlFmv'],
+  ['상지대학교','강원특별자치도','1kNY_5BFHpZvlpQxrxEi7g_TMzGcSiVyU','1n4qrNhhZYcvwDYwBO_GRormvHu6qALcD'],
+  ['서강대학교','서울특별시','13SdJE7ixlqQTD30SwnunFXT5O7-ODFb5','1YQRbX_yg7FYSYaWJ8m30Yi9mmQFTxgyq'],
+  ['서경대학교','서울특별시','15sJFINPbNKE_gCC9cj3gK58vGHKcjoPo','1ArvX5rgCK2dQq7lDO-gHZaKMN6DiyXVZ'],
+  ['서울과학기술대','서울특별시','1nTUy5wjGU4izC7Vm_q-fsSBu_f4i4tHU','13a_ceGFt27rbBdBlw123cBE1saFyKTo3'],
+  ['서울교육대학교','서울특별시','1JH_hAN1stYE4Npc6fa5D8Q_ULv1s1voi','1I2wr8nOgKnPAs9LGc9r3JiGfaui9IX8n'],
+  ['서울기독대학교','서울특별시','18RBoVuOayvsOlR6yulLHNQa2f6Y18Sff','1oMObdupgTAkqeK-XdtQUKV1MPFWC1_LK'],
+  ['서울대학교','서울특별시','1td-yEUlvHyTGNsK2KozcVptxWHY7l7IV','1QTN7oP7WQM-zVKQdRwjAoFVPkjTXgiHq'],
+  ['서울시립대학교','서울특별시','1bcY0LqA8CkCPfGxVQjrlip4E58kcmaIF','1j0cZzKbHgTXEyl_mLWTeLT7gpU3iJGlq'],
+  ['서울신학대학교','경기도','1r0Jx-Opru2KAcVMeOjXGadbXB4-RYgEk','1CStfmMWD-XeJxIsHFlprBDZ4xWz2xAGW'],
+  ['서울여자대학교','서울특별시','1AZeVrNLNlP-HkBxz-MfF-JzhpJO5d9P2','1uM5OnwyOoOEFVVeUwlA3SFVIgnVGUZ03'],
+  ['서울장신대학교','경기도','18Nnnucn4r1o6Lc7jgDL6nodsJfeJvvrZ','1DCxPp0xnn1SZVyhFffimTVPxvQ2s9ED_'],
+  ['서울한영대학교','서울특별시','1U71p7Iq8cJZ_NaUMr-0268ZQGL62fGan','1aZXKpxLzFHjsynQgUs68ZamtZWwaderv'],
+  ['서원대학교','충청북도','1Wk2P2ANZCCYoMnGDttzPpYJUE39jN9BF','1EGG64383XYKZcwGXHErCGuBb3E5z0ntV'],
+  ['선문대학교','충청남도','1pezhsybuOEhRzzABjPs7WUezjCbclQMY','1N56UCJLlxmqipACJ21xf_NpRIxkjqDD4'],
+  ['성결대학교','경기도','1gr1cnZIj1h3T90xZrfdODaQ_306Ww7TC','1_uyhyVgnFJf1AQF4X95mxoLcZp34jk4s'],
+  ['성공회대학교','서울특별시','1Ta7OH9TVWoyrwLUtvsIP_tF8EV2TrdSF','1gOcPKdIUgtucvYElKZk4d8hx_b7TmRTw'],
+  ['성균관대학교','서울특별시','1crrqvRxtz7LiYJLRGk6GD7xLOifiP8ag','1OKGLsPoT6eLu8UiizMB_0rrD8St__b6s'],
+  ['성신여자대학교','서울특별시','1VQeCVHuupTGnQBTZ-dkWeNmvXttoJOaU','16S33UZ-n9H1MUR0Jvi2RWEnXpatwa92T'],
+  ['세명대학교','충청북도','1X91wh_b7lBH3Xi078GR9BToEttPOK-QG','1UGHZPLF7_CK1uyiAbDN_APeY2Gzv3CEJ'],
+  ['세종대학교','서울특별시','1cLRyRBowqtW81Syc1cJ3SvhhHC8V8tH8','1X116sfDSAPYZ9jJRj-Y1FLmSxuE-3mpK'],
+  ['세한대학교','전라남도','1y7jsB7py8cbWJbRFlPNWMSbZNprST85M','1FL5CXoxOvpD5g16BpX-0TzJmJqUn0YWY'],
+  ['송원대학교','광주광역시','1tMTiFUhn_g7QHU6E0s1n4vsKY9M6pIuP','12cBDmO2SSCm7o70qm5EgQuJe9l_EaZx2'],
+  ['수원가톨릭대학','경기도','1FqAaPAd0URdj7vzISQjoh6XOqLKyZVEg','1RQXCAWHM2r-AHwcB06bh2FbwJTJI2cI-'],
+  ['수원대학교','경기도','1NU7ElybllcjNdDOc8kKOq1KlW1sZIr2s','1V7yJ4eqgIHp7aggaFWv5leO4y7fWm7_6'],
+  ['숙명여자대학교','서울특별시','1tfzNhJxG_AI9nuS3R-vDYpIbsW7Tjowm','1FD1WjKoK2eZlXzlGTtmWDz9bJqCbzqyu'],
+  ['순천향대학교','충청남도','14u-Re7pj8msx3BF6BZX3KXFnYFIjL2h8','1sHsrgDMeWZ7SxLf2TxxfMala_L5HZTn4'],
+  ['숭실대학교','서울특별시','17CnbxbP8cgbGFSVPQQUpVCTNUailUtrP','1UhN92yt2lu3FWDov6hwrgihA3DHlrgCv'],
+  ['신경주대학교','경상북도','1ZbzsSr_WfaVWWNRpwFvIpYBKSNurIfMy','1kZicDtUef4nahoFMUMFwai2Wq-0x9Rt2'],
+  ['신라대학교','부산광역시','1NQRZWKx8jSbXErLvVxNTDSMC5oZzHLHV','1yIdmk-64XayMybm2FntNtWD-eghGvebd'],
+  ['신한대학교','경기도','1S_ZVTScQTxRU0-hfTUf9x6ilwE1ZNAls','1ZnrWqqZgLQRL1cJ2WJ9VshhmZAQBaEDv'],
+  ['아신대학교','경기도','1Kt3ZIuUVqp75iJCXVHQ2Mo_HbS3Yv0wy','1OL6ovpINyASvBKhbHTwQdhLPNDzl9Klc'],
+  ['아주대학교','경기도','1s4Po0jOvG96IkSVR9ZXAvOJ0zshNB5Fp','1H4atcxkogf25uomFLLFcddxXUmrUV8MO'],
+  ['안양대학교','경기도','1kRciucmKK_JZsy2S6LFLSu-oNZ_HmNye','14WfLllL-UEYujMSXbKEyfj62kEZ9hQ49'],
+  ['연세대학교(미래)','경기도','','1wrH2uE6Kpo3_Oi8m3RlGA7S5bcv5SyQa'],
+  ['연세대학교(서울)','서울특별시','1uj0AX1lOsc_ehF6yXYvs5GQVA0eHuUL4','161TFn3JFGdmVRgF69MUyrgN0h6u9giHP'],
+  ['영남대학교','경상북도','1bV83j4EMHuZnsU1QyXr1eqMNAVovj74r','15qSHO2_NueXesHNWWrw97tUvtwbCTZ-9'],
+  ['영남신학대학교','경상북도','1vclCaZJ_5aGjZaVGVAC4G9fFvF6JMA2M','1cwmiFL7puVJ4MrUDAqRv3gd1Soh1ZvKq'],
+  ['영산대학교','부산광역시','1GOjB-dww2p3fgl0RCI3xjjzM8hD3ko7m','17EPimSLnKK5L1xybxc-609eBbK6IZVUF'],
+  ['영산선학대학교','전라남도','1XwPYBxR7tfUdzQdqOOGoG1i6ExaobWBk','19TfaZxnBZjVEiQScgEJdOkCQnI5pREg5'],
+  ['예수대학교','전북특별자치도','1vofs2l8bZAk7I5VWy06r-U_rZukCeYOS','1LmFuiN9rROMxvg3WEFXvsZAQgOUyIxCp'],
+  ['예원예술대학교','전북특별자치도','1BMzh_AIRoap0ZhZrJdKRBaZM9lvibUZb','1GferfQ3zt1PGJX6WmEYH9-GyWVKw_Wsu'],
+  ['용인대학교','경기도','1c6ZPXB7ap0nUct0eIWuNnDIZdqbx4_a1','1DyzIafqPjQoyX20jmkY1C7ci6geusJ-H'],
+  ['우석대학교','전북특별자치도','1hIPL6CJv5eZexSwHKngozCaQpy1md8l4','1iv4giKESGfVobWDpVKGddkJv2VqQhYU6'],
+  ['우송대학교','대전광역시','1oovBcN0bK3OPu8LoIHsvCGu4EgZnwSGo','18yL2hYZszgGbpYQei6MB_FS8Fm2djiSn'],
+  ['울산과학기술원','울산광역시','1RwRpsnUESM8bGFWDc8LyJThmgD-L8RVf','1UxDPgTUOCNXNMd0_DuU2u2aNpbqtJ4Ja'],
+  ['울산대학교','울산광역시','1VVSIXD7GJaMN9HJmCpnLoAOxvzkAH0H5','1_t-cMs6PbRwjoDVKDiBOilZZDRUtisMp'],
+  ['원광대학교','전북특별자치도','1hqOyVTAj8y4K3LlkcqYDGNu-n8UJcTqd','1XMi0Se3qzhNL3B8gfM8vE-DjgLa10Tb8'],
+  ['위덕대학교','경상북도','1fnwaEnETFcgwqs2x9FjDVYY34XoGbIl7','1KbbG_-m3OOo-Gz2aeuQvjQhhywJX6pYU'],
+  ['유원대학교','충청북도','1BRnJXqtKqkRPNkL0xq4BtyC5PvMFGzkC','1rKv4lKjBCAx076nrrkYIwxFUfxEA5xaf'],
+  ['육군사관학교','특수목적대학','1jOtXwl7mECDGZZXrL3N0HyAlnRd7O0Hz','1Ed1MYOyyBW2dcxQCAYY1UDvl74NtQ6Y7'],
+  ['을지대학교','경기도','1qC0WKlrjUovGa2NBb4AIX6GT9xG_Qkg-','1Wo1lYDTnAUhPRl6C1WsYr1c99FEKDuLs'],
+  ['이화여자대학교','서울특별시','1IC4syDQPYp8wqoCswExumT0ptHUiHzNp','1mm5wcZbyACLe6pSm7NwFbagzUC5IyXdS'],
+  ['인제대학교','경상남도','1G1OYjat0ag2H4nJeEWQHG20E9Cxcqm5k','1Z711cMACO98s21dpWKokmlyVW4YWkF2E'],
+  ['인천가톨릭대학','인천광역시','1Z6YC4pxvp0UfP2D7Z-P22Zg7cT4gGHjn','1CRAcg60y-jIzf-usxJCSPNgkRpJYXXFv'],
+  ['인천대학교','인천광역시','13zImE21jSwOshVFTQd3QbV61jCi670vv','1YFqW-wDvWWl2X6xeajj_pcf0TXEh8ZWA'],
+  ['인하대학교','인천광역시','18o1DlW5vK8bg6nb5vUyu_AZp7qalgmh_','1v70jhIaTxzGturWNfbaX7feOmvwcKbFN'],
+  ['장로회신학대학','서울특별시','13q0yjuthXZGjfOc14TBFX9gBt2t_HqCa','1GhGnBdZYDwmWyqD5gG6GUoERx8zHEvLm'],
+  ['전남대학교','광주광역시','1Eyr0V1uTfJ3iWUGSp6pweBAIuKBtG1Kv','1RwOW4svY97vkll4juYp8YeGxRWO181fX'],
+  ['전북대학교','전북특별자치도','1dPW7PjFYY0eXUYXT5Un60rTWsQbv88ic','15CWfG6z0Evz38ZVCLAOVrVlKl2HSagmg'],
+  ['전주교육대학교','전북특별자치도','1LeIjGSo1cKD7bqnUfqXmGb91_uESwzQV','1Z5GjZXI5IrxI-00ZGVyal0oLTRqslUbf'],
+  ['전주대학교','전북특별자치도','1LnT2N9s0tmnPD0wQZrD5YlLAGLr6nYz2','1ubn_2zlBfKnrIW7W12Xm40wZQ_4gYJUO'],
+  ['제주대학교','제주특별자치도','1vpEV4W8wIoXoH0GFyDgEVhI-ymkS5zlQ','1TOSwHHvJ143GeblPzmCQzZ9o2vFuPLEQ'],
+  ['조선대학교','광주광역시','1SjoH__AIpjYUHCqMcQAAwlCqovBOKwIV','1LcdN2NQx34Ew06hZGEVdzmShwlmFRKzF'],
+  ['중부대학교','충청북도','1am-oaUnagqBQntPF7abp3u80pXy2o_N_','1gbYzW58jTdZRzW7U3r_xhQRd4hUQyWFb'],
+  ['중앙대학교(서울)','서울특별시','1KAdn5uAPnc3qEvhj5m_ss-xlxKGN-xzR','1udLjw6vSQrcEuRQD9wSx6cG8_Y67ZVZI'],
+  ['중앙대학교(안성)','경기도','1KAdn5uAPnc3qEvhj5m_ss-xlxKGN-xzR','1udLjw6vSQrcEuRQD9wSx6cG8_Y67ZVZI'],
+  ['중앙승가대학교','경기도','1WvIxJ5IJLx8toftXOTEsYAuNSQuNkaeY','1DDEHgC3VSYq-Xe_RAA0wnALlLXmpG8eS'],
+  ['중원대학교','충청북도','1abqaXT2RBHSnPg-o6q3Ed3JkbzFWx8t8','1oR_si8y90ueFSK-gbdx0q4i0pimIS9AJ'],
+  ['진주교육대학교','경상남도','1qaXGBlyxj8tYKnZSaagV6pSEI4aOzpH6','1cnIsLwdtj7Z2Qg5HsLW757fgTXv_GQQf'],
+  ['차의과학대학교','경기도','1LIoeP5iAWUGv925DbjxNpO9O5NsNQIwT','1okr13anQU0D6FGI5mRUyEh8FnFvWP5aj'],
+  ['창신대학교','경상남도','1VAS-4Kdk7m5NqgjeqtKj1hgF5KWPmS8D','1uDk3L4Va3JEgz4oDEQl6hT_xvCcrg7nK'],
+  ['청운대학교','충청남도','1dZCra4Twg2PC3vlilxooGm6OyaFSzE6v','1i9XyAfdQPKM0kQQFkT4FAkq3acGyBmOO'],
+  ['청주교육대학교','충청북도','10OvJVlN70AoPcSj_10LZ3nM603v83sA7','1JKAnYsLmwJef9jdMBTmws3po_JEP2SGj'],
+  ['청주대학교','충청북도','1B5HiCocLxDJrFmVqZrvG989v04pS1v6R','11b5Ol1jTsg-uNiyXa_drxQF-0GztzTjM'],
+  ['초당대학교','전라남도','1QVPHrpV_Yypcd7Ap9kZWWnDV38O66uj-','1RZsfkk2sqQkMtQe31CyL9AJQFYr89_ZK'],
+  ['총신대학교','서울특별시','13BMSM3ZsyB0tVvCjRup-Vh8cWERFaBuA','1s0jzXwHGYsa_Ac2PkTRXakI6x3GRD-96'],
+  ['추계예술대학교','서울특별시','1fSfMdTamG9pv2b4wpue3pnIlzYqgOn5f','1HW5OvlFveyhB8sAJWw45vx4s7yIo-Voz'],
+  ['충남대학교','대전광역시','1qjRm0YsbdnUqNVR2p9X22FXB3LWPaMn-','1knbbFfWKXB7kt1pGuwdIlFC_Qn48oHHh'],
+  ['충북대학교','충청북도','1IZa21CUENFdU-RhPwxO6oqHqLdft_Qb2','1FVtEHxvWrx0EBhZIos0J40DhrEkwNM_3'],
+  ['칼빈대학교','경기도','1nw1yPsbfnoWsEo1DaNoIJtNn3OUAM5w4','1pom2pbodgxtSaJ8k8wDxgby_m_yVWE4n'],
+  ['포항공과대학교','경상북도','12EJ0-MR8BxxGkZmzfi5-X9k3qVYYZfga','1tzJ-CvS3Dq_Rr5H2sMN01CUyMy5Pw2SQ'],
+  ['한경국립대학교','경기도','1MqWr3kHjBsZVvFd-BMM077ROtyTTn5ZM','1g6-5u8wFxgl293N7--AFhJwAUvov8ag3'],
+  ['한국공학대학교','경기도','11WvH34NbFikoEcmEjsntyHQMvNylh7bW','1ZqmIExMbXcQT6z4dp1fuPbOkrSMTtNpR'],
+  ['한국과학기술원','특수목적대학','1Ac8Ex6pk1iJql8a2PjnQ6DWDF1FfAyng','1l9AgX0EFwQoZVQkUubLgWCAjnPhSS2Eg'],
+  ['한국교원대학교','충청북도','1XuDoL8zvij6Yctq3rxbO1G2M8doSO5xK','1tzqCcc1sZ-BQ32s0_ETDbZOkRYNdSw9v'],
+  ['한국기술교육대','대전광역시','1aB12pN3Ea56BXGIJ1ijXffvdPUwkU7z8','1nSHIV2EMq9L6M9dBCFeF9i6ikrVwrWJX'],
+  ['한국성서대학교','서울특별시','11Y5Hh_LkZzfzqNR-D_9eR-V3gNRns53I','12jZFgTHtn-RbNIkP0BZgTGZQFbUffbkd'],
+  ['한국에너지공대','특수목적대학','1HnDK6j_STbQUpUHcuErXtd-kUgkwcDg6','1NhlpOIY-r1ZE4LLddrYtdQul5HF9BbZO'],
+  ['한국외국어대(서울)','서울특별시','1dsW-IpsS7mD-GidvklusUHX3emhL-XWg','1apFqcCKjVgwqD0FgIrYJ8NXRYJjM7Iha'],
+  ['한국외국어대(용인)','경기도','1dsW-IpsS7mD-GidvklusUHX3emhL-XWg','1cmXf4QbDmZ977lK-cBoqY3NIgjCu2oe3'],
+  ['한국전통문화대','충청남도','1b20gbzHuj_dIfIEODjTm-RkAzzUhz_g-','1iELqjfOuLFsEdKAiplZ-cVKBVlT_7HqS'],
+  ['한국체육대학교','서울특별시','1X2p7IPLuDDE3qnxCJcbF6t9Xex0By-2e','1gLGm_mI5UaUOYC1mP57WwmcZGYgHjVZh'],
+  ['한국침례신학대','충청남도','','18sYPkvJyemyTThS8IFkWHbCqbLCcGnqT'],
+  ['한국항공대학교','경기도','1F1B9d66Dh_5bVfCKEANLBWgYA8uarUR7','1TPPCTuv9uY-r0jj79OCK7vSzwAqyfECe'],
+  ['한남대학교','충청남도','16b8b9xmKgWslwmH6jtDwdvelaWi6IUbZ','1kvfuXzyBPZAlnnYON_sMCSYvnzjXmTzi'],
+  ['한동대학교','경상북도','1HsV2XG77Mb-7_UEtsnu_780NFL9tsAdr','1IqGiFZmINQsn5baG6JPXQDg8UA3VDYGY'],
+  ['한라대학교','강원특별자치도','1C-8VEJvlRAM20-QjKT5gf-9fiurSBwjH','1D_PFFG0JTCbH2EPu1dH9mGRBMTbgLLyY'],
+  ['한림대학교','강원특별자치도','10bKivXmvSBSIuAlX8xged7TE99_xWUIZ','12fFsrabZCDzjaqGmg3G0nypymXhyvPoF'],
+  ['한서대학교','충청남도','1F3ZJLwvWeTIbC6kVhgl5qDa4MTaQ3HtO','1wqZEjWFtE0nPEuD9yB_bZFry5hqRen6v'],
+  ['한성대학교','서울특별시','1mFAl5pLWYeXxh3Z5iUKiLAK9eyC8-9E0','1wKaaU0QUQ0WnO84pniHqgnOKLKH85nXs'],
+  ['한세대학교','경기도','1oeQCnFOqJJ3u77LiL2ZZWfOoI8cI2RB-','1jwee1_-eDdUVvD-x190ANt3JFwM5a8pG'],
+  ['한신대학교','경기도','1CipO30KpWCgUkhbILwWxvhue_oEErEI3','1sjaY7ue0OH8LD_HNw6G9WbKbh7dd1VQi'],
+  ['한양대학교(ERICA)','경기도','1mNrjsSPtMkEk2kzb-61ULNBYMbR3R-LH','1mTVhYPHWrZnSYsps2t84L4snqrr0TIhG'],
+  ['한양대학교(서울)','서울특별시','1ekIE7zUJpctLHrbG3GRxHwzxw3BxsTFn','1LEvpfzgJnsHczqQrfTFX3bMnVquI9uaE'],
+  ['한일장신대학교','전북특별자치도','1QgmSKt_NNGOqD07lNNOch7Qu0N1SPdqB','1pjjAW8Ggj5Fhj5cd6WMIwenWMB4Pwx8C'],
+  ['해군사관학교','특수목적대학','1IoZanjFvdHGi7CIfp_uT3SXYOt2QCZgH','14rvm9m2LkTNaUr8FEJ3tp2drLrvM6JD2'],
+  ['협성대학교','경기도','1S7kuu4sc_TO4JSQeoOgZJ5VaNBwHVQTi','1V-u6c5KwHzbvnV10x2wBM_HzJfaDNDUt'],
+  ['호남대학교','광주광역시','1W6vlxdfmUHJ7D9RbCS9edWFyyLxtmBrw','1TELcfHlljdRCAelzv15NswDNKYCy1MLa'],
+  ['호남신학대학교','전라남도','1g_uc9hJoljr0P1sO-c2WhuvXJR3BiQCF','19y1InL-kL5eYnB9t9fKboM3JEgaNMall'],
+  ['호서대학교','충청남도','1H0KyoNWFxBV9NWKD-LR5VLNPKO9uceb7','1LaQg155Y8Tz6Eb9raTvSA9fNqkfFF46h'],
+  ['호원대학교','전북특별자치도','1CwxJwoJYYBzhA5K6ChdqV3-Kx5grVqN8','1ptBwcaYhyYHXx2vSr4Ehn04CkNDNzJKK'],
+  ['홍익대학교(서울)','서울특별시','1Oq4RlHFYW5nfV-u8fecJnluTCOnXPE0h','1fKRhXWh6U4WG629ZXfDj--weuNLNYWmH'],
+  ['홍익대학교(세종)','세종특별자치시','1Oq4RlHFYW5nfV-u8fecJnluTCOnXPE0h','1Y3QBJRKdNwLkrU5e0U2M56tu8TggQJsI'],
+  ['화성의과학대학','경기도','','1ULxv1IGtZYXfZZXHCEzJH3Elqb2jsZx3']
+];
+const RCOLOR={'서울특별시':'#3b82f6','인천광역시':'#06b6d4','경기도':'#10b981','강원특별자치도':'#84cc16','충청북도':'#eab308','충청남도':'#f97316','대전광역시':'#ef4444','세종특별자치시':'#ec4899','전북특별자치도':'#8b5cf6','전라남도':'#14b8a6','광주광역시':'#f43f5e','대구광역시':'#a78bfa','경상북도':'#fb923c','경상남도':'#4ade80','부산광역시':'#38bdf8','울산광역시':'#fbbf24','제주특별자치도':'#34d399','특수목적대학':'#94a3b8','기타':'#6b7280'};
+
+// Google Drive embed URL
+function driveUrl(fid){return`https://drive.google.com/file/d/${fid}/preview`;}
+function driveView(fid){return`https://drive.google.com/file/d/${fid}/view`;}
+
+const DATA=RAW.map((r,i)=>({id:i,name:r[0],region:r[1],fid26:r[2],fid25:r[3],y26s:r[2]?'있음':'없음',y25s:r[3]?'있음':'없음'}));
+const COLS=['name','region','y26s','y25s'];
+const COL_NAMES={name:'대학명',region:'지역',y26s:'2026보고서',y25s:'2025보고서'};
+const CF={};COLS.forEach(c=>CF[c]=new Set());
+let searchQ='',sortCol='region',sortDir=1,curCol=null,ddAllVals=[],ddCntMap={};
+let curFid='',curYear=0;
+
+// PDF 뷰어
+function openViewer(fid,name,year){
+  curFid=fid;curYear=year;
+  const yn=year===26?'2026':'2025';
+  document.getElementById('pmTitle').textContent=`${name} · ${yn}학년도 선행학습 영향평가 보고서`;
+  const badge=document.getElementById('pmYrBadge');
+  badge.textContent=yn;badge.className=`pm-yr pm-yr-${year}`;
+  document.getElementById('pmLoading').style.display='flex';
+  document.getElementById('pdfFrame').src='';
+  document.getElementById('pdfOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>{document.getElementById('pdfFrame').src=driveUrl(fid);},100);
+}
+function onLoad(){document.getElementById('pmLoading').style.display='none';}
+function openNew(){if(curFid)window.open(driveView(curFid),'_blank');}
+function closeViewer(){
+  document.getElementById('pdfOverlay').classList.remove('open');
+  document.getElementById('pdfFrame').src='';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeViewer();});
+document.getElementById('pdfOverlay').addEventListener('click',function(e){if(e.target===this)closeViewer();});
+
+function getFiltered(){
+  const q=searchQ.toLowerCase();
+  return DATA.filter(d=>{
+    if(q&&!d.name.toLowerCase().includes(q))return false;
+    for(const c of COLS)if(CF[c].size>0&&!CF[c].has(d[c]))return false;
+    return true;
+  });
+}
+function render(){
+  let rows=getFiltered();
+  const rk=Object.keys(RCOLOR);
+  rows.sort((a,b)=>{
+    if(sortCol==='region'){const d=(rk.indexOf(a.region)-rk.indexOf(b.region))*sortDir;return d!==0?d:a.name.localeCompare(b.name,'ko')*sortDir;}
+    return a.name.localeCompare(b.name,'ko')*sortDir;
+  });
+  document.getElementById('cnt26').textContent=rows.filter(d=>d.fid26).length;
+  document.getElementById('cnt25').textContent=rows.filter(d=>d.fid25).length;
+  document.getElementById('filtCnt').textContent=rows.length;
+  const tbody=document.getElementById('stbody'),noRes=document.getElementById('noRes');
+  if(!rows.length){tbody.innerHTML='';noRes.style.display='block';return;}
+  noRes.style.display='none';
+  const frag=document.createDocumentFragment();
+  rows.forEach((d,i)=>{
+    const tr=document.createElement('tr');
+    const color=RCOLOR[d.region]||'#6b7280';
+    const hl=searchQ?hlText(d.name,searchQ):d.name;
+    const nm=d.name.replace(/'/g,"\\'");
+    const b26=d.fid26?`<button class="rb rb26" onclick="openViewer('${d.fid26}','${nm}',26)">26</button>`:`<span class="rb-none">—</span>`;
+    const b25=d.fid25?`<button class="rb rb25" onclick="openViewer('${d.fid25}','${nm}',25)">25</button>`:`<span class="rb-none">—</span>`;
+    // 지역별 배지 배경색 (투명도 적용)
+    const hex2rgba=(h,a)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;};
+    const badgeBg=hex2rgba(color,.12);
+    const badgeBd=hex2rgba(color,.3);
+    tr.innerHTML=`<td><span class="rnum">${i+1}</span></td><td class="tl"><span class="univ-name">${hl}</span></td><td><span class="rbadge" style="background:${badgeBg};border-color:${badgeBd};color:${color}"><span class="rdot" style="background:${color}"></span>${d.region}</span></td><td>${b26}</td><td>${b25}</td>`;
+    frag.appendChild(tr);
+  });
+  tbody.innerHTML='';tbody.appendChild(frag);
+  updFb();updTags();updSortBtns();
+}
+function hlText(t,q){const i=t.toLowerCase().indexOf(q.toLowerCase());if(i<0)return t;return t.slice(0,i)+`<mark style="background:#1e3a8a;color:#93c5fd;border-radius:2px;padding:0 1px">${t.slice(i,i+q.length)}</mark>`+t.slice(i+q.length);}
+function updFb(){document.querySelectorAll('.sfb[data-col]').forEach(b=>b.classList.toggle('on',CF[b.dataset.col]&&CF[b.dataset.col].size>0));}
+function updTags(){const w=document.getElementById('safWrap');w.innerHTML='';COLS.forEach(c=>{if(!CF[c].size)return;const v=[...CF[c]];const s=v.length>3?`${v.slice(0,3).join(', ')} 외 ${v.length-3}개`:v.join(', ');const t=document.createElement('div');t.className='saf-tag';t.innerHTML=`${COL_NAMES[c]}: ${s} ✕`;t.onclick=()=>{CF[c].clear();render();};w.appendChild(t);});}
+function updSortBtns(){document.querySelectorAll('.sort-btn').forEach(b=>{const c=b.dataset.sort;b.classList.remove('asc','desc');if(c===sortCol)b.classList.add(sortDir===1?'asc':'desc');b.textContent=(c===sortCol)?(sortDir===1?'↑':'↓'):'⇅';});}
+function onSearch(){searchQ=document.getElementById('sgSrc').value.trim();render();}
+function resetAll(){searchQ='';document.getElementById('sgSrc').value='';COLS.forEach(c=>CF[c].clear());sortCol='region';sortDir=1;render();}
+function openDd(btn,col){
+  const sdd=document.getElementById('sdd');
+  if(sdd.classList.contains('open')&&curCol===col){closeDd();return;}
+  curCol=col;
+  const q=searchQ.toLowerCase();
+  const base=DATA.filter(d=>{if(q&&!d.name.toLowerCase().includes(q))return false;for(const c of COLS){if(c===col)continue;if(CF[c].size>0&&!CF[c].has(d[c]))return false;}return true;});
+  ddCntMap={};base.forEach(d=>{const v=d[col];ddCntMap[v]=(ddCntMap[v]||0)+1;});
+  ddAllVals=Object.keys(ddCntMap).sort((a,b)=>a.localeCompare(b,'ko'));
+  document.getElementById('sddTitle').textContent=COL_NAMES[col]+' 필터';
+  document.getElementById('sddSrc').value='';buildList('');
+  sdd.classList.add('open');
+  const rect=btn.getBoundingClientRect();let left=rect.left;
+  if(left+290>window.innerWidth-8)left=window.innerWidth-294;
+  sdd.style.left=Math.max(4,left)+'px';sdd.style.top=(rect.bottom+4)+'px';
+  setTimeout(()=>document.getElementById('sddSrc').focus(),50);
+}
+function buildList(q){
+  const kw=q?q.split(/[,\s]+/).map(k=>k.trim()).filter(Boolean):[];
+  const vis=kw.length?ddAllVals.filter(v=>kw.some(k=>v.toLowerCase().includes(k))):ddAllVals;
+  const list=document.getElementById('sddList');
+  if(!vis.length){list.innerHTML='<div class="sdd-none">검색 결과 없음</div>';return;}
+  list.innerHTML='';const frag=document.createDocumentFragment();
+  vis.forEach((v,i)=>{
+    const id='scb_'+i;const wrap=document.createElement('div');wrap.className='sdd-item';
+    wrap.onclick=()=>{const cb=wrap.querySelector('input');cb.checked=!cb.checked;};
+    const cb=document.createElement('input');cb.type='checkbox';cb.id=id;cb.dataset.v=v;cb.checked=CF[curCol].has(v);cb.onclick=e=>e.stopPropagation();
+    const lbl=document.createElement('label');lbl.htmlFor=id;lbl.title=v;lbl.textContent=v.length>26?v.slice(0,24)+'…':v;lbl.onclick=e=>e.stopPropagation();
+    const cnt=document.createElement('span');cnt.className='scnt';cnt.textContent=ddCntMap[v]||0;
+    wrap.appendChild(cb);wrap.appendChild(lbl);wrap.appendChild(cnt);frag.appendChild(wrap);
+  });
+  list.appendChild(frag);
+}
+function closeDd(){document.getElementById('sdd').classList.remove('open');curCol=null;}
+function applyFilter(){
+  if(!curCol)return;
+  const checked=[...document.querySelectorAll('#sddList input[type=checkbox]:checked')];
+  const vals=checked.map(cb=>cb.dataset.v);
+  if(!vals.length||vals.length>=ddAllVals.length)CF[curCol].clear();else CF[curCol]=new Set(vals);
+  closeDd();render();
+}
+// ── 테마 토글 ──────────────────────────────
+function toggleTheme(){
+  const isLight=document.documentElement.getAttribute('data-theme')==='light';
+  const next=isLight?'dark':'light';
+  applyTheme(next);
+  localStorage.setItem('theme',next);
+}
+function applyTheme(t){
+  const isLight=t==='light';
+  document.documentElement.setAttribute('data-theme',isLight?'light':'');
+  document.getElementById('themeIcon').textContent=isLight?'🌙':'☀️';
+  document.getElementById('themeLabel').textContent=isLight?'다크':'라이트';
+}
+// ── 초기 테마 복원 ──────────────────────────
+(function(){
+  const saved=localStorage.getItem('theme')||'dark';
+  applyTheme(saved);
+})();
+
+function toggleGuide(){
+  const body=document.getElementById('guideBody');
+  const arrow=document.getElementById('guideArrow');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  arrow.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';
+  setTimeout(recalcSticky, 420);
+}
+// 가이드 높이 변화 시 SSH · 상태바 · 테이블헤더 sticky top 재계산
+function recalcSticky(){
+  const headerH = 50;
+  const guideH  = document.getElementById('guideWrap').offsetHeight;
+  const sshEl   = document.querySelector('.ssh');
+  const srbEl   = document.querySelector('.srb');
+  const thEl    = document.querySelector('#stbl thead th');
+  const sshH    = sshEl ? sshEl.offsetHeight : 0;
+  if(sshEl) sshEl.style.top  = (headerH + guideH) + 'px';
+  if(srbEl) srbEl.style.cssText += ';position:sticky;top:' + (headerH + guideH + sshH) + 'px;z-index:88';
+  // 테이블 thead는 srb 아래 (srb 없으면 ssh 아래)
+  const srbH = srbEl ? srbEl.offsetHeight : 0;
+  if(thEl){
+    document.querySelectorAll('#stbl thead th').forEach(th=>{
+      th.style.top = '0px'; // thead sticky는 .stw overflow:auto 기준이므로 0유지
+    });
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('totalCnt').textContent=DATA.length;
+  document.getElementById('sddSrc').addEventListener('input',function(){buildList(this.value.toLowerCase());});
+  document.getElementById('sddAll').addEventListener('click',()=>{document.querySelectorAll('#sddList input[type=checkbox]').forEach(c=>c.checked=true);});
+  document.getElementById('sddNone').addEventListener('click',()=>{document.querySelectorAll('#sddList input[type=checkbox]').forEach(c=>c.checked=false);});
+  document.getElementById('sddCl').addEventListener('click',closeDd);
+  document.getElementById('sddOk').addEventListener('click',applyFilter);
+  document.querySelectorAll('.sfb[data-col]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openDd(btn,btn.dataset.col);});});
+  document.querySelectorAll('.sort-btn[data-sort]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const c=btn.dataset.sort;if(sortCol===c)sortDir*=-1;else{sortCol=c;sortDir=1;}render();});});
+  document.addEventListener('click',e=>{if(!e.target.closest('#sdd')&&!e.target.closest('.sfb'))closeDd();});
+  recalcSticky();
+  window.addEventListener('resize', recalcSticky);
+  render();
+});
+</script>
+</body>
+</html>
